@@ -1,0 +1,72 @@
+extends layout
+
+block content
+    .container
+        h1.mt-2= title
+        p Welcome to #{title}
+        .alert.alert-info(role="alert")
+            h4.alert-heading Today is Amaki Sally's birthday!
+            p April 25th is Amaki Sally's birthday, we wish her a happy birthday!
+            hr
+            a(href="https://twitter.com/sally_amaki/status/1254067807303565313?s=20") Congratulate her birthday on Twitter
+
+        .alert.alert-success.alert-dismissible.mt-2.fade.show(role='alert' hidden=!addSuccess) Success!
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+                span(aria-hidden='true') &times;
+        each activity in activities
+            .card.mb-2
+                .card-header
+                    a.card-link.text-info(href="#activity" + activities.indexOf(activity) data-toggle="collapse")= activity["activityName"]
+                    - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
+                    span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
+                - var formattingString = "YYYY/MM/DD LT";
+                if activities.indexOf(activity) === 0
+                    - var cardContentClassName = 'collapse show'
+                else
+                    - var cardContentClassName = 'collapse'
+                div(class=cardContentClassName, id="activity" + activities.indexOf(activity))
+                    .card-body
+                        h4.card-title= activity["activityName"]
+                        -
+                            var names = []
+                            for (const name of activity["participants"]) {
+                                names.push(actors[name]["nameEngLast"] + " " + actors[name]["nameEngFirst"])
+                            }
+                        h6.card-subtitle.mb-2.text-muted= names.join(", ")
+                        -
+                            var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
+                            var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
+                        if activity["isEndTimeUnknown"]
+                            p.card-text= startDate.format(formattingString) + " JST"
+                        else
+                            p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
+                        each link in activity["links"]
+                            a.card-link(href=link, class="btn btn-outline-primary")= "Link " + (activity["links"].indexOf(link) + 1)
+                        .container
+                            .d-flex.justify-content-center(id="twitterEmbed" + activities.indexOf(activity))
+        button(class="btn btn-primary" type="button" onclick="testREST()") Test API
+    script.
+        function testREST() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:3000/api/test'
+            })
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/api/activityData',
+            success: function (data) {
+                const activities = data
+                let activity;
+                for (activity of activities) {
+                    const twitterId = activity["relatedTweetId"];
+                    if (twitterId !== "") {
+                        twttr.widgets.createTweet(
+                            twitterId,
+                            document.getElementById("twitterEmbed" + activities.indexOf(activity))
+                        )
+                    }
+                }
+            }
+        })

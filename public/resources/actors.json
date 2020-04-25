@@ -1,0 +1,132 @@
+{
+  "all": {
+    "nameEngLast": "22/7",
+    "nameEngFirst": "",
+    "nameJpnLast": "ナナブンノニジュウニ",
+    "nameJpnFirst": "",
+    "nameJpnHiraganaLast": "ななぶんのにじゅうに",
+    "nameJpnHiraganaFirst": "",
+    "nicknameEng": "Nananiji",
+    "nicknameJpn": "ナナニジ"
+  },
+  "amaki": {
+    "nameEngLast": "Amaki",
+    "nameEngFirst": "Sally",
+    "nameJpnLast": "天城",
+    "nameJpnFirst": "サリー",
+    "nameJpnHiraganaLast": "あまき",
+    "nameJpnHiraganaFirst": "さりー",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "umino": {
+    "nameEngLast": "Umino",
+    "nameEngFirst": "Ruri",
+    "nameJpnLast": "海乃",
+    "nameJpnFirst": "るり",
+    "nameJpnHiraganaLast": "うみの",
+    "nameJpnHiraganaFirst": "るり",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "kawase": {
+    "nameEngLast": "Kawase",
+    "nameEngFirst": "Uta",
+    "nameJpnLast": "河瀬",
+    "nameJpnFirst": "詩",
+    "nameJpnHiraganaLast": "かわせ",
+    "nameJpnHiraganaFirst": "うた",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "kuraoka": {
+    "nameEngLast": "Kuraoka",
+    "nameEngFirst": "Mizuha",
+    "nameJpnLast": "倉岡",
+    "nameJpnFirst": "水巴",
+    "nameJpnHiraganaLast": "くらおか",
+    "nameJpnHiraganaFirst": "みずは",
+    "nicknameEng": "Mizzy",
+    "nicknameJpn": ""
+  },
+  "saijo": {
+    "nameEngLast": "Saijo",
+    "nameEngFirst": "Nagomi",
+    "nameJpnLast": "西條",
+    "nameJpnFirst": "和",
+    "nameJpnHiraganaLast": "さいじょう",
+    "nameJpnHiraganaFirst": "なごみ",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "shirosawa": {
+    "nameEngLast": "Shirosawa",
+    "nameEngFirst": "Kanae",
+    "nameJpnLast": "白沢",
+    "nameJpnFirst": "かなえ",
+    "nameJpnHiraganaLast": "しろさわ",
+    "nameJpnHiraganaFirst": "かなえ",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "suzuhana": {
+    "nameEngLast": "Suzuhana",
+    "nameEngFirst": "Moe",
+    "nameJpnLast": "涼花",
+    "nameJpnFirst": "萌",
+    "nameJpnHiraganaLast": "すずはな",
+    "nameJpnHiraganaFirst": "もえ",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "takatsuji": {
+    "nameEngLast": "Takatsuji",
+    "nameEngFirst": "Urara",
+    "nameJpnLast": "高辻",
+    "nameJpnFirst": "麗",
+    "nameJpnHiraganaLast": "たかつじ",
+    "nameJpnHiraganaFirst": "うらら",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "takeda": {
+    "nameEngLast": "Takeda",
+    "nameEngFirst": "Aina",
+    "nameJpnLast": "武田",
+    "nameJpnFirst": "愛奈",
+    "nameJpnHiraganaLast": "たけだ",
+    "nameJpnHiraganaFirst": "あいな",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "hokaze": {
+    "nameEngLast": "Hokaze",
+    "nameEngFirst": "Chiharu",
+    "nameJpnLast": "帆風",
+    "nameJpnFirst": "千春",
+    "nameJpnHiraganaLast": "ほかぜ",
+    "nameJpnHiraganaFirst": "ちはる",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "miyase": {
+    "nameEngLast": "Miyase",
+    "nameEngFirst": "Reina",
+    "nameJpnLast": "宮瀬",
+    "nameJpnFirst": "玲奈",
+    "nameJpnHiraganaLast": "みやせ",
+    "nameJpnHiraganaFirst": "れいな",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  },
+  "hanakawa": {
+    "nameEngLast": "Hanakawa",
+    "nameEngFirst": "Mei",
+    "nameJpnLast": "花川",
+    "nameJpnFirst": "芽衣",
+    "nameJpnHiraganaLast": "はなかわ",
+    "nameJpnHiraganaFirst": "めい",
+    "nicknameEng": "",
+    "nicknameJpn": ""
+  }
+}

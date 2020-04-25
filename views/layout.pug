@@ -1,0 +1,42 @@
+doctype html
+html
+    head
+        title= title
+        script(async='', src='https://platform.twitter.com/widgets.js', charset='utf-8')
+        link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
+        script(src='/jquery/dist/jquery.min.js')
+        script(src='/bootstrap/dist/js/bootstrap.bundle.js')
+    body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+            a.navbar-brand(href='/')= title
+            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarNav.collapse.navbar-collapse
+                ul.navbar-nav
+                    li.nav-item#navHome
+                        a.nav-link(href='/')
+                            | Home
+                            span.sr-only (current)
+                    li.nav-item#navAdd
+                        a.nav-link(href='/add') Add Activity
+                    li.nav-item#navDigest
+                        a.nav-link(href='/digest') Weekly Digest
+        block content
+        //- footer
+        footer
+            p.text-center.text-muted.small
+                | version: 0.0.1-alpha
+                br
+                | codename: underworld
+        script.
+            const path = window.location.pathname;
+            if (path === "/") {
+                const navItem = document.getElementById("navHome");
+                navItem.classList.add("active")
+            } else if (path === "/add") {
+                const navItem = document.getElementById("navAdd");
+                navItem.classList.add("active");
+            } else if (path === "/digest") {
+                const navItem = document.getElementById("navDigest");
+                navItem.classList.add("active");
+            }
