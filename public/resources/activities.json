@@ -12,5 +12,21 @@
     "links": [],
     "imgURL": [],
     "relatedTweetId": "1254067807303565313"
+  },
+  {
+    "activityName": "Miyase Reina SHOWROOM Stream",
+    "activityNameJpn": "",
+    "participants": [
+      "miyase"
+    ],
+    "startDate": "2020-04-25T13:00:00Z",
+    "isFullDay": false,
+    "isEndTimeUnknown": false,
+    "endDate": "2020-04-25T14:00:00Z",
+    "links": [
+      "https://www.showroom-live.com/digital_idol_9"
+    ],
+    "imgURL": [],
+    "relatedTweetId": "1253989115168612352"
   }
 ]

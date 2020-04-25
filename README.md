@@ -2,7 +2,7 @@
 
 # A.K.A.N.E.
 
-Version 0.0.2-alpha
+Version 0.0.3-alpha
 
 Codename: underworld
 

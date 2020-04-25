@@ -140,7 +140,7 @@ router.post('/addActivity', [
 
         if (req.body.eventTweetLink !== undefined && req.body.eventTweetLink !== "") {
             const sanitizedTweetURL = req.sanitize(req.body.eventTweetLink);
-            newActivity["relatedTweetId"] = twitterParse(sanitizedTweetURL);
+            newActivity["relatedTweetId"] = twitterParse(sanitizedTweetURL)["id"];
         }
 
         // read the json file, then append to the object, then sort, then write back
