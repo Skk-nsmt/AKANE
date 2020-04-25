@@ -19,7 +19,6 @@ block content
                     a.card-link.text-info(href="#activity" + activities.indexOf(activity) data-toggle="collapse")= activity["activityName"]
                     - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
                     span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
-                - var formattingString = "YYYY/MM/DD LT";
                 if activities.indexOf(activity) === 0
                     - var cardContentClassName = 'collapse show'
                 else
@@ -34,6 +33,12 @@ block content
                             }
                         h6.card-subtitle.mb-2.text-muted= names.join(", ")
                         -
+                            var formattingString
+                            if (activity["isFullDay"]) {
+                                formattingString = "YYYY/MM/DD"
+                            } else {
+                                formattingString = "YYYY/MM/DD LT";
+                            }
                             var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
                             var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
                         if activity["isEndTimeUnknown"]

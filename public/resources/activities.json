@@ -1,2 +1,16 @@
 [
+  {
+    "activityName": "Sally's birthday!",
+    "activityNameJpn": "",
+    "participants": [
+      "amaki"
+    ],
+    "startDate": "2020-04-24T15:00:00Z",
+    "isFullDay": true,
+    "isEndTimeUnknown": true,
+    "endDate": "",
+    "links": [],
+    "imgURL": [],
+    "relatedTweetId": "1254067807303565313"
+  }
 ]

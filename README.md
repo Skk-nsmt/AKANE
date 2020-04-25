@@ -1,5 +1,9 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Skk-nsmt/AKANE) 
+
 # A.K.A.N.E.
 
-Version 0.0.1-alpha
+Version 0.0.2-alpha
+
+Codename: underworld
 
 A simple website for 22/7.
