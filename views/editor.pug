@@ -1,5 +1,7 @@
 extends layout
 
+// two modes: add mode and edit mode
+// change to a separate page in the future?
 block content
     .container
         h1.mt-2= (mode === 'add' ? "Add Activity" : "Edit Activity")
@@ -105,9 +107,13 @@ block content
                     else
                         each link, index in itemToEdit["links"]
                             if (index === 0)
-                                input.form-control(type="url" id="eventLink0" name="eventLink" + itemToEdit["links"].indexOf(link) aria-describedby="eventLinkHelp" value=link placeholder="https://...")
+                                input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" value=link placeholder="https://...")
                             else
-                                input.form-control.mt-2(type="url" id="eventLink0" name="eventLink" + itemToEdit["links"].indexOf(link) aria-describedby="eventLinkHelp" value=link placeholder="https://...")
+                                // need to make a field with Remove
+                                .input-group.mt-2
+                                    input.form-control(type="url" id="eventLink" + index name="eventLink" + index aria-describedby="eventLinkHelp" value=link placeholder="https://...")
+                                    .input-group-append
+                                        button.btn.btn-primary(onclick="removeLinkInput(this)") Remove
                 else
                     input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" placeholder="https://...")
                 small.form-text.text-muted(id='eventLinkHelp') This is an optional field

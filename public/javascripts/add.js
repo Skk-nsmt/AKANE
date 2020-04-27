@@ -219,5 +219,8 @@ function dateCheckValidity() {
                 numIndividualSelected++
             }
         }
+
+        isAllChecked = document.getElementById("checkboxAll").checked
+        extraLinkCount = document.getElementById("numRelatedLinks").value - 1
     })
 })()

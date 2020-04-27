@@ -45,7 +45,6 @@ block content
                         hr
                         .container
                             .d-flex.justify-content-center(id="twitterEmbed" + activities.indexOf(activity))
-                        hr
                         a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
                         button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + activities.indexOf(activity)) Delete
                         .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + activities.indexOf(activity))

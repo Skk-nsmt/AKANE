@@ -110,14 +110,13 @@ router.post('/addActivity', checkArray, function (req, res) {
         }
 
         // user input date is in JST, must convert it to UTC to store
-        var startTime = req.body.eventStartTime // this time has user's timezone data
-
+        var startTime = req.body.eventStartTime // this time has user's timezone data, so need to somehow parse it
         var startTimeString
         if (req.body.isFullDayEvent !== undefined) {
-            // if full day event, then the field is in UTC
-            startTimeString = `${startTime.getUTCFullYear()}-${(startTime.getUTCMonth() < 10 ? '0' : '') + (startTime.getUTCMonth() + 1)}-${(startTime.getUTCDate() < 10 ? '0' : '') + startTime.getUTCDate()}T${(startTime.getUTCHours() < 10 ? '0' : '') + startTime.getUTCHours()}:${(startTime.getUTCMinutes() < 10 ? '0' : '') + startTime.getUTCMinutes()}:00`
+            // if full day event, then the field is converted to UTC, need to get the JST string
+            startTimeString = moment(req.body.eventStartTime).tz('UTC').format("YYYY-MM-DD[T]HH:mm:00")
         } else {
-            startTimeString = `${startTime.getFullYear()}-${(startTime.getMonth() < 10 ? '0' : '') + (startTime.getMonth() + 1)}-${(startTime.getDate() < 10 ? '0' : '') + startTime.getDate()}T${(startTime.getHours() < 10 ? '0' : '') + startTime.getHours()}:${(startTime.getMinutes() < 10 ? '0' : '') + startTime.getMinutes()}:00`
+            startTimeString = moment(req.body.eventStartTime).format("YYYY-MM-DD[T]HH:mm:00")
         }
 
         var eventStartJST = moment.tz(startTimeString, "Asia/Tokyo")
@@ -136,9 +135,9 @@ router.post('/addActivity', checkArray, function (req, res) {
             var endTimeString
             if (req.body.isFullDayEvent !== undefined) {
                 // if full day event, then the field is in UTC
-                endTimeString = `${endTime.getUTCFullYear()}-${(endTime.getUTCMonth() < 10 ? '0' : '') + (endTime.getUTCMonth() + 1)}-${(endTime.getUTCDate() < 10 ? '0' : '') + endTime.getUTCDate()}T${(endTime.getUTCHours() < 10 ? '0' : '') + endTime.getUTCHours()}:${(endTime.getUTCMinutes() < 10 ? '0' : '') + endTime.getUTCMinutes()}:00`
+                endTimeString = moment(endTime).tz('UTC').format("YYYY-MM-DD[T]HH:mm:00")
             } else {
-                endTimeString = `${endTime.getFullYear()}-${(endTime.getMonth() < 10 ? '0' : '') + (endTime.getMonth() + 1)}-${(endTime.getDate() < 10 ? '0' : '') + endTime.getDate()}T${(endTime.getHours() < 10 ? '0' : '') + endTime.getHours()}:${(endTime.getMinutes() < 10 ? '0' : '') + endTime.getMinutes()}:00`
+                endTimeString = moment(endTime).format("YYYY-MM-DD[T]HH:mm:00")
             }
             var eventEndJST = moment.tz(endTimeString, "Asia/Tokyo");
             newActivity["endDate"] = eventEndJST.clone().tz("UTC").format();
