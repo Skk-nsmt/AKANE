@@ -1,8 +1,8 @@
 extends layout
 
-// two modes: add mode and edit mode
-// change to a separate page in the future?
 block content
+    // two modes: add mode and edit mode
+    // change to a separate page in the future?
     .container
         h1.mt-2= (mode === 'add' ? "Add Activity" : "Edit Activity")
         .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!ifError) There are errors in your submission, please correct them and try again.
@@ -69,9 +69,8 @@ block content
                         }
 
                         if (itemToEdit["isEndTimeUnknown"] === true) {
-                            isEndDisabled = true
-                        } else {
-                            isEndDisabled = false
+                            isEndDisabled = true;
+                            endTime = undefined
                         }
                     } else {
                         timeMode = "datetime-local"

@@ -131,14 +131,14 @@ function participantsCheckValidity() {
 }
 
 function dateCheckValidity() {
-    var startDate = document.getElementById("eventStartTime");
-    var endDate = document.getElementById("eventEndTime");
+    var endTimeUnknown = document.getElementById("isEndTimeUnknown");
+    if (endTimeUnknown.checked !== true) {
+        var startDate = document.getElementById("eventStartTime");
+        var endDate = document.getElementById("eventEndTime");
 
-    if (new Date(endDate.value) - new Date(startDate.value) <= 0) {
-        return false;
-    } else {
-        return true;
+        return new Date(endDate.value) - new Date(startDate.value) > 0;
     }
+    return true
 }
 
 
@@ -160,9 +160,12 @@ function dateCheckValidity() {
                         validateGroup[i].classList.add('was-validated');
                     }
 
+                    var startDate
+                    var endDate
+
                     if (dateCheckValidity() === false) {
-                        var startDate = document.getElementById("eventStartTime");
-                        var endDate = document.getElementById("eventEndTime");
+                        startDate = document.getElementById("eventStartTime");
+                        endDate = document.getElementById("eventEndTime");
 
                         startDate.classList.remove("is-valid")
                         startDate.classList.add("is-invalid")
@@ -172,8 +175,8 @@ function dateCheckValidity() {
                         endDate.classList.add("is-invalid")
                         endDate.parentNode.classList.remove("was-validated")
                     } else {
-                        var startDate = document.getElementById("eventStartTime");
-                        var endDate = document.getElementById("eventEndTime");
+                        startDate = document.getElementById("eventStartTime");
+                        endDate = document.getElementById("eventEndTime");
 
                         startDate.classList.remove("is-invalid")
                         startDate.classList.add("is-valid")
