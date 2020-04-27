@@ -3,22 +3,39 @@ var router = express.Router();
 
 const jsonfile = require('jsonfile')
 
+var mongoClient = require('mongodb').MongoClient;
+const dotenv = require('dotenv');
+dotenv.config();
+
 /* GET home page. */
 router.get('/', function (req, res) {
-    const activityJsonObj = jsonfile.readFileSync('public/resources/activities.json')
     const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
 
-    var ifAddSuccess = req.session.addSuccess
-    req.session.addSuccess = null
+    var ifOpSuccess = req.session.opSuccess
+    req.session.opSuccess = null
 
-    res.render('index', {
-            title: 'A.K.A.N.E.',
-            activities: activityJsonObj,
-            actors: actorJsonObj,
-            moment: require('moment-timezone'),
-            addSuccess: ifAddSuccess
+    mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+        if (err) {
+            res.render("error")
+        } else {
+            const db = client.db(process.env.DATABASE_NAME)
+            db.collection(process.env.DATABASE_COLLECTION).find({}).toArray(function (err, result) {
+                if (err) {
+                    res.render("error")
+                }
+                result = result.sort((a, b) => new Date(b["startDate"]) - new Date(apa["startDate"]))
+                res.render('index', {
+                        title: 'A.K.A.N.E.',
+                        activities: result,
+                        actors: actorJsonObj,
+                        moment: require('moment-timezone'),
+                        addSuccess: ifOpSuccess
+                    }
+                )
+                client.close();
+            })
         }
-    )
+    })
 });
 
 module.exports = router;

@@ -130,52 +130,58 @@ function participantsCheckValidity() {
     return false;
 }
 
-(function () {
-    'use strict';
-    document.getElementById("numRelatedLinks").value = document.getElementById("links").childElementCount - 3;
+window.addEventListener('load', function () {
+    // document.getElementById("activityForm").reset();
 
-    window.addEventListener('load', function () {
-        // document.getElementById("activityForm").reset();
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    var validateGroup = document.getElementsByClassName('validate-me');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false || participantsCheckValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
 
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        var validateGroup = document.getElementsByClassName('validate-me');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false || participantsCheckValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
+                for (var i = 0; i < validateGroup.length; i++) {
+                    validateGroup[i].classList.add('was-validated');
+                }
 
-                    for (var i = 0; i < validateGroup.length; i++) {
-                        validateGroup[i].classList.add('was-validated');
+                const allCheckbox = document.getElementById("checkboxAll");
+                let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
+                    "takeda", "hokaze", "miyase", "hanakawa"]
+
+                if (isAllChecked === false && numIndividualSelected === 0) {
+                    allCheckbox.classList.add('is-invalid');
+                    var names
+                    var individualCheckbox
+
+                    for (names of idNames) {
+                        individualCheckbox = document.getElementById("checkbox" + names);
+                        individualCheckbox.classList.add('is-invalid');
                     }
+                } else if ((isAllChecked === true && numIndividualSelected === 0) || (isAllChecked === false && numIndividualSelected > 0)) {
+                    allCheckbox.classList.remove('is-invalid')
+                    allCheckbox.classList.add('is-valid');
 
-                    const allCheckbox = document.getElementById("checkboxAll");
-                    let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
-                        "takeda", "hokaze", "miyase", "hanakawa"]
-
-                    if (isAllChecked === false && numIndividualSelected === 0) {
-                        allCheckbox.classList.add('is-invalid');
-                        var names
-                        var individualCheckbox
-
-                        for (names of idNames) {
-                            individualCheckbox = document.getElementById("checkbox" + names);
-                            individualCheckbox.classList.add('is-invalid');
-                        }
-                    } else if ((isAllChecked === true && numIndividualSelected === 0) || (isAllChecked === false && numIndividualSelected > 0)) {
-                        allCheckbox.classList.remove('is-invalid')
-                        allCheckbox.classList.add('is-valid');
-
-                        for (names of idNames) {
-                            individualCheckbox = document.getElementById("checkbox" + names);
-                            individualCheckbox.classList.remove('is-invalid')
-                            individualCheckbox.classList.add('is-valid');
-                        }
+                    for (names of idNames) {
+                        individualCheckbox = document.getElementById("checkbox" + names);
+                        individualCheckbox.classList.remove('is-invalid')
+                        individualCheckbox.classList.add('is-valid');
                     }
                 }
-            }, false);
-        });
-    }, false);
-})();
+            }
+        }, false);
+    });
+}, false);
+
+$(document).ready(function () {
+    let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
+        "takeda", "hokaze", "miyase", "hanakawa"]
+    for (name of idNames) {
+        var individualCheckbox = document.getElementById("checkbox" + name);
+        if (individualCheckbox.checked === true) {
+            numIndividualSelected++
+        }
+    }
+})

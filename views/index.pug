@@ -4,19 +4,13 @@ block content
     .container
         h1.mt-2= title
         p Welcome to #{title}
-        .alert.alert-info(role="alert")
-            h4.alert-heading Today is Amaki Sally's birthday!
-            p April 26th is Amaki Sally's birthday, we wish her a happy birthday!
-            hr
-            a(href="https://twitter.com/sally_amaki/status/1254067807303565313?s=20") Congratulate her birthday on Twitter
-
         .alert.alert-success.alert-dismissible.mt-2.fade.show(role='alert' hidden=!addSuccess) Success!
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
         each activity in activities
             .card.mb-2
                 .card-header
-                    a.card-link.text-info(href="#activity" + activities.indexOf(activity) data-toggle="collapse")= activity["activityName"]
+                    a.card-link.text-primary(href="#activity" + activities.indexOf(activity) data-toggle="collapse")= activity["activityName"]
                     - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
                     span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
                 if activities.indexOf(activity) === 0
@@ -26,6 +20,7 @@ block content
                 div(class=cardContentClassName, id="activity" + activities.indexOf(activity))
                     .card-body
                         h4.card-title= activity["activityName"]
+                        h6.card-subtitle.mb-2.text-muted= activity["activityNameJpn"]
                         -
                             var names = []
                             for (const name of activity["participants"]) {
@@ -45,10 +40,12 @@ block content
                             p.card-text= startDate.format(formattingString) + " JST"
                         else
                             p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
-                        each link in activity["links"]
-                            a.card-link(href=link, class="btn btn-outline-primary")= "Link " + (activity["links"].indexOf(link) + 1)
+                        each link, index in activity["links"]
+                            a.card-link.btn.btn-outline-primary(href=link)= "Link " + (index + 1)
                         .container
                             .d-flex.justify-content-center(id="twitterEmbed" + activities.indexOf(activity))
+                        a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
+                        a.btn.btn-danger.ml-2(href="api/delete/?id=" + activity["_id"]) Delete
         button(class="btn btn-primary" type="button" onclick="testREST()") Test API
     script.
         function testREST() {
@@ -58,23 +55,25 @@ block content
             })
         }
 
-        $.ajax({
-            type: 'GET',
-            url: 'api/activityData',
-            success: function (data) {
-                const activities = data
-                let activity;
-                for (activity of activities) {
-                    const twitterId = activity["relatedTweetId"];
-                    if (twitterId !== "") {
-                        twttr.widgets.createTweet(
-                            twitterId,
-                            document.getElementById("twitterEmbed" + activities.indexOf(activity))
-                        )
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'api/activityData',
+                success: function (data) {
+                    const activities = data
+                    let activity;
+                    for (activity of activities) {
+                        const twitterId = activity["relatedTweetId"];
+                        if (twitterId !== "") {
+                            twttr.widgets.createTweet(
+                                twitterId,
+                                document.getElementById("twitterEmbed" + activities.indexOf(activity))
+                            )
+                        }
                     }
                 }
-            }
-        })
+            })
+        });
 
 block twitterScript
     script(async='', src='https://platform.twitter.com/widgets.js', charset='utf-8')

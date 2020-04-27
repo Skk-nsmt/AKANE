@@ -4,3 +4,11 @@ block content
     .container
         .alert.alert-info.mt-2(role="alert")
             span This feature will be available in the beta version.
+        button(class="btn btn-primary" type="button" onclick="testREST()") Test API
+        script.
+            function testREST() {
+                $.ajax({
+                    type: 'GET',
+                    url: 'api/test'
+                })
+            }

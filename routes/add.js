@@ -11,8 +11,9 @@ router.get('/', function (req, res) {
     req.session.ifAddError = null;
     req.session.ifUnexpectedError = null;
 
-    res.render('add', {
+    res.render('editor', {
         title: 'A.K.A.N.E.',
+        mode: "add",
         actors: actorJsonObj,
         ifError: ifErrorFromValidation,
         ifErrorUnexpected: ifErrorUnexpected
