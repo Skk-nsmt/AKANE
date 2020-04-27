@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
                 if (err) {
                     res.render("error")
                 }
-                result = result.sort((a, b) => new Date(b["startDate"]) - new Date(apa["startDate"]))
+                result = result.sort((a, b) => new Date(b["startDate"]) - new Date(a["startDate"]))
                 res.render('index', {
                         title: 'A.K.A.N.E.',
                         activities: result,
