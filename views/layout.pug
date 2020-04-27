@@ -2,6 +2,7 @@ doctype html
 html
     head
         title= title
+        meta(name="viewport" content="width=device-width, initial-scale=1")
         link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
         script(src='/jquery/dist/jquery.min.js')
         script(src='/bootstrap/dist/js/bootstrap.bundle.js')
@@ -20,6 +21,8 @@ html
                         a.nav-link(href='/add') Add Activity
                     li.nav-item#navDigest
                         a.nav-link(href='/digest') Weekly Digest
+                    li.nav-item
+                        a.nav-link(href='https://github.com/Skk-nsmt/AKANE/issues') File bug report
         block content
         //- footer
         footer
