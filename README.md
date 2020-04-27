@@ -2,7 +2,7 @@
 
 # A.K.A.N.E.
 
-Version 0.1.0-alpha
+Version 0.1.1-alpha
 
 Codename: underworld
 

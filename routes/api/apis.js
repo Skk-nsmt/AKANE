@@ -53,11 +53,11 @@ checkArray = [
     check("eventStartTime").isISO8601().toDate(),
     check("eventEndTime").custom(function (value, {req}) {
         // if checkbox checked, then this field does not exist, simply return true
-        // if not checked, then must check if ISO8601
+        // if not checked, then must check if ISO8601, then check if end time is after start time
         if (req.body.isEndTimeUnknown !== undefined) { // checked
             return true;
         } else {
-            return validator.isISO8601(value);
+            return validator.isISO8601(value) && new Date(value) - new Date(req.body.eventStartTime) >= 0;
         }
     }),
     check("numRelatedLinks").isInt({min: 1}).custom(function (value, {req}) {

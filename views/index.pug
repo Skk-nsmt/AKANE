@@ -42,10 +42,24 @@ block content
                             p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
                         each link, index in activity["links"]
                             a.card-link.btn.btn-outline-primary(href=link)= "Link " + (index + 1)
+                        hr
                         .container
                             .d-flex.justify-content-center(id="twitterEmbed" + activities.indexOf(activity))
+                        hr
                         a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
-                        a.btn.btn-danger.ml-2(href="api/delete/?id=" + activity["_id"]) Delete
+                        button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + activities.indexOf(activity)) Delete
+                        .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + activities.indexOf(activity))
+                            .modal-dialog(role='document')
+                                .modal-content
+                                    .modal-header
+                                        h5#deleteModalLabel.modal-title Confirm Delete
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') &times;
+                                    .modal-body Are you sure you want to delete this activity?
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                                        a.btn.btn-danger(href="api/delete/?id=" + activity["_id"]) Delete
+
         button(class="btn btn-primary" type="button" onclick="testREST()") Test API
     script.
         function testREST() {
@@ -60,7 +74,7 @@ block content
                 type: 'GET',
                 url: 'api/activityData',
                 success: function (data) {
-                    const activities = data
+                    const activities = data.sort((a, b) => new Date(b["startDate"]) - new Date(a["startDate"]))
                     let activity;
                     for (activity of activities) {
                         const twitterId = activity["relatedTweetId"];

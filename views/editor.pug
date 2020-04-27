@@ -83,7 +83,7 @@ block content
                     .form-group.validate-me
                         label(for='eventStartTime') Start time (JST)
                         input.form-control(type=timeMode id='eventStartTime' name="eventStartTime" aria-describedby='eventStartHelp' placeholder="Event start time" value=startTime required=true)
-                        div.invalid-feedback This field is required
+                        div.invalid-feedback This field is required / Invalid date
                         small.form-text.text-muted(id='eventStartHelp') This is a required field. Safari and Firefox are not supported.
                     .form-group
                         .form-check
@@ -96,7 +96,7 @@ block content
                     .form-group.validate-me
                         label(for='eventEndTime') End time (JST)
                         input.form-control(type=timeMode id='eventEndTime' name='eventEndTime' aria-describedby='eventStartHelp' placeholder="Event end time" value=endTime required=!isEndDisabled disabled=isEndDisabled)
-                        div.invalid-feedback This field is required
+                        div.invalid-feedback This field is required / Invalid date
             .form-group.validate-me(id="links")
                 label(for="eventLink0") Related Links
                 if (itemToEdit)
