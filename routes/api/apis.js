@@ -17,7 +17,7 @@ var twitterParse = require('twitter-url-parser');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-discordClient.login('NjQwMzU4MjkxMDAzNjcwNTM4.XhptuA.KX8vAx1cpliInJYRlsEk134a-cE');
+discordClient.login(process.env.DISCORD_TOKEN);
 
 // double check for all / individual exclusion
 member_participation_check = function (value) {
