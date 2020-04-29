@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const Discord = require('discord.js');
+const discordClient = new Discord.Client();
+
 var mongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 const dotenv = require('dotenv');
@@ -10,6 +13,11 @@ const {check, validationResult} = require('express-validator');
 var validator = require("validator");
 var moment = require("moment-timezone");
 var twitterParse = require('twitter-url-parser');
+
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+discordClient.login('NjQwMzU4MjkxMDAzNjcwNTM4.XhptuA.KX8vAx1cpliInJYRlsEk134a-cE');
 
 // double check for all / individual exclusion
 member_participation_check = function (value) {
@@ -173,6 +181,82 @@ router.post('/addActivity', checkArray, function (req, res) {
                         res.redirect("/add")
                     }
                     client.close()
+                    // send a discord message if it is a showroom stream
+                    if (req.body.isShowroomStream) {
+                        var botSpamChannel = discordClient.channels.cache.get("336287198510841856");
+
+                        let stream_links = {
+                            hokaze: ['Hokaze Chiharu', 'https://www.showroom-live.com/digital_idol_2', "RED"],
+                            umino: ['Umino Ruri', 'https://www.showroom-live.com/digital_idol_4', "GREEN"],
+                            hanakawa: ['Hanakawa Mei', 'https://www.showroom-live.com/digital_idol_7', "BLUE"],
+                            kawase: ['Kawase Uta', 'https://www.showroom-live.com/kawaseuta', "BLUE"],
+                            miyase: ['Miyase Reina', 'https://www.showroom-live.com/digital_idol_9', "DARK_VIVID_PINK"],
+                            amaki: ['Amaki Sally', 'https://www.showroom-live.com/digital_idol_11', "GOLD"],
+                            takeda: ['Takeda Aina', 'https://www.showroom-live.com/digital_idol_15', "AQUA"],
+                            shirosawa: ['Shirosawa Kanae', 'https://www.showroom-live.com/digital_idol_18', "PURPLE"],
+                            takatsuji: ['Takatsuji Urara', 'https://www.showroom-live.com/digital_idol_19', [230, 136, 242]],
+                            suzuhana: ['Suzuhana Moe', 'https://www.showroom-live.com/digital_idol_20', "LUMINOUS_VIVID_PINK"],
+                            kuraoka: ['Kuraoka Mizuha', 'https://www.showroom-live.com/digital_idol_21', "ORANGE"],
+                            saijo: ['Saijo Nagomi', 'https://www.showroom-live.com/digital_idol_22', "DARK_GREY"],
+                            all: ['Group Stream', 'https://www.showroom-live.com/nanabunno', "BLUE"]
+                        }
+
+                        // get person, name, link
+                        let streamer_key = newActivity["participants"][0]
+                        let name = stream_links[streamer_key][0]
+                        let link = stream_links[streamer_key][1]
+                        let color = stream_links[streamer_key][2]
+
+                        // get time
+                        var startTimeString
+                        if (req.body.isFullDayEvent !== undefined) {
+                            // if full day event, then the field is converted to UTC, need to get the JST string
+                            startTimeString = moment(req.body.eventStartTime).tz('UTC').format("YYYY-MM-DD[T]HH:mm:00")
+                        } else {
+                            startTimeString = moment(req.body.eventStartTime).format("YYYY-MM-DD[T]HH:mm:00")
+                        }
+
+                        var eventStartJST = moment.tz(startTimeString, "Asia/Tokyo")
+
+                        // convert time
+                        let jstTime = eventStartJST.format("YYYY-MM-DD LT");
+                        let utcTime = eventStartJST.tz('UTC').format("YYYY-MM-DD LT");
+                        let pstTime = eventStartJST.tz("America/Los_Angeles").format("YYYY-MM-DD LT");
+                        let ctTime = eventStartJST.tz("America/Chicago").format("YYYY-MM-DD LT");
+                        let etTime = eventStartJST.tz("America/New_York").format("YYYY-MM-DD LT");
+
+                        // get image
+                        const headers = {
+                            'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.62 Safari/537.36",
+                            'Referer': "https://www.showroom-live.com"
+                        }
+
+                        axios.get(link, {headers})
+                            .then(response => {
+                                var $ = cheerio.load(response.data)
+                                const imageUrl = $('meta[property="og:image"]').attr("content")
+
+                                // make embed
+                                const newEmbed = new Discord.MessageEmbed()
+                                    .setColor(color)
+                                    .setTitle(`**${name}**`)
+                                    .setDescription(link)
+                                    .addFields(
+                                        {name: 'Japan Time', value: jstTime},
+                                        {name: 'Universal Time', value: utcTime},
+                                        {name: 'Eastern Time', value: etTime},
+                                        {name: 'Central Time', value: ctTime},
+                                        {name: 'Eastern Time', value: pstTime}
+                                    )
+                                    .setAuthor('Upcoming Stream', 'https://www.showroom-live.com/assets/img/v3/apple-touch-icon.png')
+                                    .setFooter('Sent by A.K.A.N.E. (This is a test)')
+                                    .setImage(imageUrl)
+
+                                // send
+                                botSpamChannel.send(newEmbed)
+                            })
+                    }
+
                     req.session.opSuccess = true
                     res.redirect("/")
                 })

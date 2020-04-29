@@ -21,6 +21,9 @@ block content
                 label(for='eventNameJapanese') Event Name (Japanese)
                 input.form-control(type='text' id='eventNameJapanese' name="eventNameJapanese" aria-describedby='eventNameHelpJapanese' placeholder="Enter Japanese event name here" value=(itemToEdit ? itemToEdit["activityNameJpn"] : undefined))
                 small.form-text.text-muted(id='eventNameHelpJapanese') This is an optional field
+            .form-group.form-check
+                input.form-check-input#isShowroomStream(type="checkbox" name="isShowroomStream")
+                label.form-check-label(for="isShowroomStream") This is a SHOWROOM stream (currently sending to #bot spam for testing)
             .form-group
                 label Participants
                 br

@@ -11,16 +11,16 @@ block content
         .collapse#collapseFilter
             .row
                 .col
-                    h5 Seiyuus
+                    h5 Filter Activities by Seiyuus
             .row
                 .col-1
                 .col-10.justify-content-center
                     .btn-group.btn-group-sm.d-none.d-lg-flex(role="group" aria-label="Seiyuu Filters")
                         each actor, key in actors
-                            button.btn.btn-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"]
+                            button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"]
                     .btn-group-vertical.d-block.d-lg-none(role="group" aria-label="Seiyuu Filters")
                         each actor, key in actors
-                            button.btn.btn-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"] + " " + actor["nameEngFirst"]
+                            button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"] + " " + actor["nameEngFirst"]
                 .col-1
             .row
                 .col
@@ -29,10 +29,10 @@ block content
                 .col-1
                 .col-10.justify-content-center
                     .btn-group.btn-group-sm.btn-group-toggle.d-flex.justify-content-center(data-toggle='buttons')
-                        label.btn.btn-secondary.active(data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ALL filters you have selected")
+                        label.btn.btn-outline-secondary.active(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ALL filters you have selected")
                             input#allOption(type='radio' name='options' autocomplete='off' checked='')
                             |  All
-                        label.btn.btn-secondary(data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ANY filters you have selected")
+                        label.btn.btn-outline-secondary(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ANY filters you have selected")
                             input#anyOption(type='radio', name='options', autocomplete='off')
                             |  Any
                 .col-1
