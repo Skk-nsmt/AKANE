@@ -6,8 +6,8 @@ const jsonfile = require('jsonfile')
 router.get('/', function (req, res) {
     const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
 
-    var ifErrorFromValidation = req.session.ifAddError
-    var ifErrorUnexpected = req.session.ifUnexpectedError
+    let ifErrorFromValidation = req.session.ifAddError
+    let ifErrorUnexpected = req.session.ifUnexpectedError
     req.session.ifAddError = null;
     req.session.ifUnexpectedError = null;
 

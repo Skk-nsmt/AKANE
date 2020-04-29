@@ -3,8 +3,8 @@ var router = express.Router();
 
 const jsonfile = require('jsonfile')
 
-var mongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectId;
+const mongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 const dotenv = require('dotenv');
 dotenv.config();
 

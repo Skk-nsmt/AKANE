@@ -1,92 +1,101 @@
 extends layout
 
 block content
-    .container-md
+    .container-sm
         h1.mt-2= title
         p Welcome to #{title}
         .alert.alert-success.alert-dismissible.mt-2.fade.show(role='alert' hidden=!addSuccess) Success!
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
-        each activity in activities
-            .card.mb-2
-                .card-header
-                    a.card-link.text-primary(href="#activity" + activities.indexOf(activity) data-toggle="collapse")= activity["activityName"]
-                    - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
-                    span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
-                if activities.indexOf(activity) === 0
-                    - var cardContentClassName = 'collapse show'
-                else
-                    - var cardContentClassName = 'collapse'
-                div(class=cardContentClassName, id="activity" + activities.indexOf(activity))
-                    .card-body
-                        h4.card-title= activity["activityName"]
-                        h6.card-subtitle.mb-2.text-muted= activity["activityNameJpn"]
-                        -
-                            var names = []
-                            for (const name of activity["participants"]) {
-                                names.push(actors[name]["nameEngLast"] + " " + actors[name]["nameEngFirst"])
-                            }
-                        h6.card-subtitle.mb-2.text-muted= names.join(", ")
-                        -
-                            var formattingString
-                            if (activity["isFullDay"]) {
-                                formattingString = "YYYY/MM/DD"
-                            } else {
-                                formattingString = "YYYY/MM/DD LT";
-                            }
-                            var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
-                            var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
-                        if activity["isEndTimeUnknown"]
-                            p.card-text= startDate.format(formattingString) + " JST"
-                        else
-                            p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
-                        each link, index in activity["links"]
-                            a.card-link.btn.btn-outline-primary(href=link)= "Link " + (index + 1)
-                        hr
-                        .container
-                            .d-flex.justify-content-center(id="twitterEmbed" + activities.indexOf(activity))
-                        a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
-                        button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + activities.indexOf(activity)) Delete
-                        .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + activities.indexOf(activity))
-                            .modal-dialog(role='document')
-                                .modal-content
-                                    .modal-header
-                                        h5#deleteModalLabel.modal-title Confirm Delete
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                            span(aria-hidden='true') &times;
-                                    .modal-body Are you sure you want to delete this activity?
-                                    .modal-footer
-                                        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
-                                        a.btn.btn-danger(href="api/delete/?id=" + activity["_id"]) Delete
+        button.btn.btn-primary.mb-2(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseExample") Filter Options
+        .collapse#collapseFilter
+            .row
+                .col
+                    h5 Seiyuus
+            .row
+                .col-1
+                .col-10.justify-content-center
+                    .btn-group.btn-group-sm.d-none.d-lg-flex(role="group" aria-label="Seiyuu Filters")
+                        each actor, key in actors
+                            button.btn.btn-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"]
+                    .btn-group-vertical.d-block.d-lg-none(role="group" aria-label="Seiyuu Filters")
+                        each actor, key in actors
+                            button.btn.btn-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"] + " " + actor["nameEngFirst"]
+                .col-1
+            .row
+                .col
+                    h5 Options
+            .row
+                .col-1
+                .col-10.justify-content-center
+                    .btn-group.btn-group-sm.btn-group-toggle.d-flex.justify-content-center(data-toggle='buttons')
+                        label.btn.btn-secondary.active(data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ALL filters you have selected")
+                            input#allOption(type='radio' name='options' autocomplete='off' checked='')
+                            |  All
+                        label.btn.btn-secondary(data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ANY filters you have selected")
+                            input#anyOption(type='radio', name='options', autocomplete='off')
+                            |  Any
+                .col-1
+            hr
+
+        // populate activities
+        #activityArea
+            each activity, index in activities
+                .card.mb-2
+                    .seiyuu-filter-meta-tags(hidden=true class=activity["participants"])
+                    .card-header
+                        a.card-link.text-primary(href="#activity" + index data-toggle="collapse")= activity["activityName"]
+                        - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
+                        span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
+                    if activities.indexOf(activity) === 0
+                        - var cardContentClassName = 'collapse show'
+                    else
+                        - var cardContentClassName = 'collapse'
+                    div(class=cardContentClassName, id="activity" + index)
+                        .card-body
+                            h4.card-title= activity["activityName"]
+                            h6.card-subtitle.mb-2.text-muted= activity["activityNameJpn"]
+                            -
+                                var names = []
+                                for (const name of activity["participants"]) {
+                                    names.push(actors[name]["nameEngLast"] + " " + actors[name]["nameEngFirst"])
+                                }
+                            h6.card-subtitle.mb-2.text-muted= names.join(", ")
+                            -
+                                var formattingString
+                                if (activity["isFullDay"]) {
+                                    formattingString = "YYYY/MM/DD"
+                                } else {
+                                    formattingString = "YYYY/MM/DD LT";
+                                }
+                                var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
+                                var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
+                            if activity["isEndTimeUnknown"]
+                                p.card-text= startDate.format(formattingString) + " JST"
+                            else
+                                p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
+                            each link, index in activity["links"]
+                                a.card-link.btn.btn-outline-primary(href=link)= "Link " + (index + 1)
+                            hr
+                            .container
+                                .d-flex.justify-content-center(id="twitterEmbed" + index)
+                            a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
+                            button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + activities.indexOf(activity)) Delete
+                            .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + activities.indexOf(activity))
+                                .modal-dialog(role='document')
+                                    .modal-content
+                                        .modal-header
+                                            h5#deleteModalLabel.modal-title Confirm Delete
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                                span(aria-hidden='true') &times;
+                                        .modal-body Are you sure you want to delete this activity?
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                                            a.btn.btn-danger(href="api/delete/?id=" + activity["_id"]) Delete
 
         button(class="btn btn-primary" type="button" onclick="testREST()") Test API
-    script.
-        function testREST() {
-            $.ajax({
-                type: 'GET',
-                url: 'api/test'
-            })
-        }
-
-        $(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: 'api/activityData',
-                success: function (data) {
-                    const activities = data.sort((a, b) => new Date(b["startDate"]) - new Date(a["startDate"]))
-                    let activity;
-                    for (activity of activities) {
-                        const twitterId = activity["relatedTweetId"];
-                        if (twitterId !== "") {
-                            twttr.widgets.createTweet(
-                                twitterId,
-                                document.getElementById("twitterEmbed" + activities.indexOf(activity))
-                            )
-                        }
-                    }
-                }
-            })
-        });
+        hr
+    script(src="javascripts/index.js")
 
 block twitterScript
     script(async='', src='https://platform.twitter.com/widgets.js', charset='utf-8')

@@ -1,6 +1,6 @@
-var isAllChecked = false;
-var numIndividualSelected = 0;
-var extraLinkCount = 0;
+let isAllChecked = false;
+let numIndividualSelected = 0;
+let extraLinkCount = 0;
 
 function toggleFullDayEvent() {
     const isFullDayEventCheckbox = document.getElementById("isFullDayEvent");
@@ -56,7 +56,7 @@ function toggleAllSelect() {
     if (allCheckbox.checked === true) {
         isAllChecked = true;
         numIndividualSelected = 0;
-        var individualCheckbox
+        let individualCheckbox
 
         let name;
         for (name of idNames) {
@@ -77,13 +77,13 @@ function toggleAllSelect() {
 
 function addLinkField() {
     extraLinkCount++
-    var numLinkField = document.getElementById("numRelatedLinks")
+    const numLinkField = document.getElementById("numRelatedLinks")
     numLinkField.value++;
-    var inputGroup = document.createElement("div")
+    const inputGroup = document.createElement("div")
 
     inputGroup.setAttribute("class", "input-group mt-2")
 
-    var newLinkInput = document.createElement("input")
+    const newLinkInput = document.createElement("input")
 
     newLinkInput.setAttribute("class", "form-control")
     newLinkInput.setAttribute("type", "url")
@@ -94,10 +94,10 @@ function addLinkField() {
 
     inputGroup.appendChild(newLinkInput)
 
-    var inputGroupAppendDiv = document.createElement("div")
+    const inputGroupAppendDiv = document.createElement("div")
     inputGroupAppendDiv.setAttribute("class", "input-group-append")
 
-    var inputGroupAppendBtn = document.createElement("button")
+    const inputGroupAppendBtn = document.createElement("button")
     inputGroupAppendBtn.textContent = "Remove"
     inputGroupAppendBtn.setAttribute("class", "btn btn-primary")
     inputGroupAppendBtn.setAttribute("onclick", "removeLinkInput(this)")
@@ -105,16 +105,16 @@ function addLinkField() {
     inputGroupAppendDiv.appendChild(inputGroupAppendBtn)
     inputGroup.appendChild(inputGroupAppendDiv)
 
-    var eventLinks = document.getElementById("links")
+    const eventLinks = document.getElementById("links")
     eventLinks.insertBefore(inputGroup, document.getElementById("eventLinkHelp"))
 }
 
 function removeLinkInput(element) {
-    var inputGroup = element.parentNode.parentNode;
+    const inputGroup = element.parentNode.parentNode;
     inputGroup.parentNode.removeChild(inputGroup);
 
     extraLinkCount--
-    var numLinkField = document.getElementById("numRelatedLinks")
+    const numLinkField = document.getElementById("numRelatedLinks")
     numLinkField.value--;
 }
 
@@ -133,8 +133,8 @@ function participantsCheckValidity() {
 function dateCheckValidity() {
     var endTimeUnknown = document.getElementById("isEndTimeUnknown");
     if (endTimeUnknown.checked !== true) {
-        var startDate = document.getElementById("eventStartTime");
-        var endDate = document.getElementById("eventEndTime");
+        const startDate = document.getElementById("eventStartTime");
+        const endDate = document.getElementById("eventEndTime");
 
         return new Date(endDate.value) - new Date(startDate.value) > 0;
     }
@@ -147,8 +147,8 @@ function dateCheckValidity() {
         // document.getElementById("activityForm").reset();
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        var validateGroup = document.getElementsByClassName('validate-me');
+        const forms = document.getElementsByClassName('needs-validation');
+        const validateGroup = document.getElementsByClassName('validate-me');
         // Loop over them and prevent submission
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -217,7 +217,7 @@ function dateCheckValidity() {
         let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
             "takeda", "hokaze", "miyase", "hanakawa"]
         for (name of idNames) {
-            var individualCheckbox = document.getElementById("checkbox" + name);
+            let individualCheckbox = document.getElementById("checkbox" + name);
             if (individualCheckbox.checked === true) {
                 numIndividualSelected++
             }

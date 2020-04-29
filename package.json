@@ -1,6 +1,6 @@
 {
   "name": "akane",
-  "version": "0.1.2-alpha",
+  "version": "0.2.0-alpha",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -20,7 +20,7 @@
     "express-validator": "^6.4.0",
     "helmet": "^3.22.0",
     "http-errors": "^1.7.3",
-    "is-promise": "^2.2.2",
+    "is-promise": "^4.0.0",
     "jquery": "^3.4.1",
     "jsonfile": "^6.0.1",
     "moment-timezone": "^0.5.28",

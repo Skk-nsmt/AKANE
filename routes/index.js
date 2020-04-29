@@ -11,7 +11,7 @@ dotenv.config();
 router.get('/', function (req, res) {
     const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
 
-    var ifOpSuccess = req.session.opSuccess
+    let ifOpSuccess = req.session.opSuccess
     req.session.opSuccess = null
 
     mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
