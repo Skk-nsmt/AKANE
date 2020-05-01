@@ -16,7 +16,9 @@ block content
         .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!permission) You do not have permission to carry out that action.
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
-        button.btn.btn-primary.mb-2(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseExample") Filter Options
+        button.btn.btn-primary.mb-2(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseExample")
+            i.fas.fa-filter
+            |  Filter Options
         .collapse#collapseFilter
             .row
                 .col
@@ -69,7 +71,9 @@ block content
                                 for (const name of activity["participants"]) {
                                     names.push(actors[name]["nameEngLast"] + " " + actors[name]["nameEngFirst"])
                                 }
-                            h6.card-subtitle.mb-2.text-muted= names.join(", ")
+                            h6.card-subtitle.mb-2.text-muted
+                                i.fas.fa-user-friends
+                                = " " + names.join(", ")
                             -
                                 var formattingString
                                 if (activity["isFullDay"]) {
@@ -80,16 +84,26 @@ block content
                                 var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
                                 var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
                             if activity["isEndTimeUnknown"]
-                                p.card-text= startDate.format(formattingString) + " JST"
+                                p.card-text
+                                    i.far.fa-clock
+                                    = " " + startDate.format(formattingString) + " JST"
                             else
-                                p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
+                                p.card-text
+                                    i.far.fa-clock
+                                    = " " + startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
                             each link, linkIndex in activity["links"]
-                                a.card-link.btn.btn-outline-primary(href=link target="_blank")= "Link " + (linkIndex + 1)
+                                a.card-link.btn.btn-outline-primary(href=link target="_blank")
+                                    i.fas.fa-external-link-alt
+                                    = " Link " + (linkIndex + 1)
                             hr
                             .container
                                 .d-flex.justify-content-center(id="twitterEmbed" + index)
-                            a.btn.btn-info(href="/edit?id=" + activity["_id"] hidden=!discordPrivilege) Edit
-                            button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + index hidden=!discordPrivilege) Delete
+                            a.btn.btn-info(href="/edit?id=" + activity["_id"] hidden=!discordPrivilege)
+                                i.fas.fa-edit
+                                |  Edit
+                            button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + index hidden=!discordPrivilege)
+                                i.fas.fa-trash-alt
+                                |  Delete
                             .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + index)
                                 .modal-dialog(role='document')
                                     .modal-content
@@ -99,8 +113,12 @@ block content
                                                 span(aria-hidden='true') &times;
                                         .modal-body Are you sure you want to delete this activity?
                                         .modal-footer
-                                            button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
-                                            a.btn.btn-danger(href="api/delete/?id=" + activity["_id"]) Delete
+                                            button.btn.btn-secondary(type='button', data-dismiss='modal')
+                                                i.fas.fa-arrow-left
+                                                |  Cancel
+                                            a.btn.btn-danger(href="api/delete/?id=" + activity["_id"])
+                                                i.fas.fa-trash-alt
+                                                |  Delete
 
         button(class="btn btn-primary" type="button" onclick="testREST()") Test API
         hr

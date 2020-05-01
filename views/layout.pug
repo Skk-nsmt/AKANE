@@ -16,10 +16,13 @@ html
                 ul.navbar-nav.mr-auto
                     li.nav-item#navHome
                         a.nav-link(href='/')
-                            | Home
+                            i.fas.fa-home
+                            |  Home
                             span.sr-only (current)
                     li.nav-item#navAdd
-                        a.nav-link(href='/add') Add Activity
+                        a.nav-link(href='/add')
+                            i.fas.fa-plus
+                            |  Add Activity
                     li.nav-item#navDigest
                         a.nav-link(href='/digest') Weekly Digest
                 ul.navbar-nav
@@ -28,7 +31,8 @@ html
                             a.nav-link= `Welcome! ${userInfo.username}#${userInfo.discriminator}`
                         li.nav-item.active
                             a.btn.btn-outline-success.nav-link(href="/auth/logout")
-                                | Logout
+                                i.fas.fa-power-off
+                                |  Logout
                     else
                         li.nav-item.active
                             a.btn.btn-outline-success.nav-link(href="/auth/discord")
