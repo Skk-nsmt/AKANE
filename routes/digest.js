@@ -1,10 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 router.get('/', function (req, res) {
-    res.render('digest', {
-        title: 'A.K.A.N.E.'
-    })
-})
+    res.render('digest', {})
+});
 
 module.exports = router;

@@ -6,13 +6,14 @@ html
         link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
         script(src='/jquery/dist/jquery.min.js')
         script(src='/bootstrap/dist/js/bootstrap.bundle.js')
+        link(rel='stylesheet', href='@fortawesome/fontawesome-free/css/all.min.css')
     body
         nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
             a.navbar-brand(href='/')= title
             button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
                 span.navbar-toggler-icon
             #navbarNav.collapse.navbar-collapse
-                ul.navbar-nav
+                ul.navbar-nav.mr-auto
                     li.nav-item#navHome
                         a.nav-link(href='/')
                             | Home
@@ -21,13 +22,22 @@ html
                         a.nav-link(href='/add') Add Activity
                     li.nav-item#navDigest
                         a.nav-link(href='/digest') Weekly Digest
-                    li.nav-item
-                        a.nav-link(href='https://github.com/Skk-nsmt/AKANE/issues') File bug report
+                ul.navbar-nav
+                    if (userInfo)
+                        li.nav-item.active
+                            a.nav-link= `Welcome! ${userInfo.username}#${userInfo.discriminator}`
+                        li.nav-item.active
+                            a.btn.btn-outline-success.nav-link(href="/auth/logout")
+                                | Logout
+                    else
+                        li.nav-item.active
+                            a.btn.btn-outline-success.nav-link(href="/auth/discord")
+                                i.fab.fa-discord
+                                |  Login via Discord
         block content
         //- footer
         footer
-            p.text-center.text-muted.small
-                | version: 0.3.0-alpha
+            p.text-center.text-muted.small= `version: ${version}`
                 br
                 | codename: underworld
         script.

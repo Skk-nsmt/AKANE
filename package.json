@@ -1,6 +1,6 @@
 {
   "name": "akane",
-  "version": "0.3.0-alpha",
+  "version": "0.4.0-alpha",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -9,6 +9,7 @@
     "node": "14.x"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "acorn": ">=5.7.4",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
@@ -29,6 +30,9 @@
     "moment-timezone": "^0.5.28",
     "mongodb": "^3.5.7",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-discord": "^0.1.3",
+    "passport-oauth2-refresh": "^2.0.0",
     "popper.js": "^1.16.1",
     "pug": "^2.0.4",
     "twitter-url-parser": "0.0.1",

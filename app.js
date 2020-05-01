@@ -1,38 +1,45 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var session = require('express-session')
-var helmet = require('helmet')
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const helmet = require('helmet');
+const passport = require('passport');
+const jsonfile = require('jsonfile')
 
 const expressSanitizer = require('express-sanitizer');
 
-var indexRouter = require('./routes/index');
-var apiRouter = require('./routes/api/apis');
-var addRouter = require('./routes/add');
-var digestRouter = require('./routes/digest');
-var editRouter = require('./routes/edit');
+const indexRouter = require('./routes/index');
+const apiRouter = require('./routes/api/apis');
+const addRouter = require('./routes/add');
+const digestRouter = require('./routes/digest');
+const editRouter = require('./routes/edit');
+const discordAuthRouter = require('./routes/discord-auth');
 
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('trust proxy', 1)
 
-app.use(helmet())
+app.use(helmet());
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(expressSanitizer());
-app.use(session({saveUninitialized: false, resave: true, secret: "There is no secret yet. "}));
+app.use(session({saveUninitialized: false, resave: false, secret: process.env.SESSION_SECRET}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/node_modules'));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
+app.use('/', discordAuthRouter);
 app.use('/api', apiRouter);
 app.use('/add', addRouter);
 app.use('/edit', editRouter);
@@ -53,5 +60,14 @@ app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
+
+app.locals = {
+    title: "A.K.A.N.E.",
+    version: "0.4.0-alpha",
+    moment: require('moment-timezone'),
+    actors: actorJsonObj
+}
 
 module.exports = app;

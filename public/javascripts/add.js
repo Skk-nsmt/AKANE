@@ -14,6 +14,9 @@ function toggleFullDayEvent() {
         startDateInput.type = "datetime-local";
         endDateInput.type = "datetime-local";
     }
+
+    startDateInput.value = "";
+    endDateInput.value = "";
 }
 
 function toggleEndTimeUnknown() {
@@ -22,7 +25,7 @@ function toggleEndTimeUnknown() {
 
     if (isEndTimeUnknownCheckbox.checked === true) {
         eventEndTimeInput.disabled = true;
-        eventEndTimeInput.value = ""
+        eventEndTimeInput.value = "";
         eventEndTimeInput.required = false;
     } else {
         eventEndTimeInput.disabled = false;
@@ -37,26 +40,26 @@ function toggleIndividualSelect(clicked_id) {
     if (clickedCheckbox.checked === true) {
         numIndividualSelected++;
     } else {
-        numIndividualSelected--
+        numIndividualSelected--;
     }
 
     if (numIndividualSelected === 0) {
-        allCheckbox.disabled = false
+        allCheckbox.disabled = false;
     } else {
-        allCheckbox.checked = false
-        allCheckbox.disabled = true
+        allCheckbox.checked = false;
+        allCheckbox.disabled = true;
     }
 }
 
 function toggleAllSelect() {
     let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
-        "takeda", "hokaze", "miyase", "hanakawa"]
+        "takeda", "hokaze", "miyase", "hanakawa"];
 
-    const allCheckbox = document.getElementById("checkboxAll")
+    const allCheckbox = document.getElementById("checkboxAll");
     if (allCheckbox.checked === true) {
         isAllChecked = true;
         numIndividualSelected = 0;
-        let individualCheckbox
+        let individualCheckbox;
 
         let name;
         for (name of idNames) {
@@ -69,52 +72,52 @@ function toggleAllSelect() {
 
         let name;
         for (name of idNames) {
-            individualCheckbox = document.getElementById("checkbox" + name);
+            let individualCheckbox = document.getElementById("checkbox" + name);
             individualCheckbox.disabled = false;
         }
     }
 }
 
 function addLinkField() {
-    extraLinkCount++
-    const numLinkField = document.getElementById("numRelatedLinks")
+    extraLinkCount++;
+    const numLinkField = document.getElementById("numRelatedLinks");
     numLinkField.value++;
-    const inputGroup = document.createElement("div")
+    const inputGroup = document.createElement("div");
 
-    inputGroup.setAttribute("class", "input-group mt-2")
+    inputGroup.setAttribute("class", "input-group mt-2");
 
-    const newLinkInput = document.createElement("input")
+    const newLinkInput = document.createElement("input");
 
-    newLinkInput.setAttribute("class", "form-control")
-    newLinkInput.setAttribute("type", "url")
-    newLinkInput.setAttribute("id", "eventLink" + extraLinkCount)
-    newLinkInput.setAttribute("name", "eventLink" + extraLinkCount)
-    newLinkInput.setAttribute("placeholder", "https://...")
-    newLinkInput.setAttribute("aria-describedby", "eventLinkHelp")
+    newLinkInput.setAttribute("class", "form-control");
+    newLinkInput.setAttribute("type", "url");
+    newLinkInput.setAttribute("id", "eventLink" + extraLinkCount);
+    newLinkInput.setAttribute("name", "eventLink" + extraLinkCount);
+    newLinkInput.setAttribute("placeholder", "https://...");
+    newLinkInput.setAttribute("aria-describedby", "eventLinkHelp");
 
-    inputGroup.appendChild(newLinkInput)
+    inputGroup.appendChild(newLinkInput);
 
-    const inputGroupAppendDiv = document.createElement("div")
-    inputGroupAppendDiv.setAttribute("class", "input-group-append")
+    const inputGroupAppendDiv = document.createElement("div");
+    inputGroupAppendDiv.setAttribute("class", "input-group-append");
 
-    const inputGroupAppendBtn = document.createElement("button")
-    inputGroupAppendBtn.textContent = "Remove"
-    inputGroupAppendBtn.setAttribute("class", "btn btn-primary")
-    inputGroupAppendBtn.setAttribute("onclick", "removeLinkInput(this)")
+    const inputGroupAppendBtn = document.createElement("button");
+    inputGroupAppendBtn.textContent = "Remove";
+    inputGroupAppendBtn.setAttribute("class", "btn btn-primary");
+    inputGroupAppendBtn.setAttribute("onclick", "removeLinkInput(this)");
 
-    inputGroupAppendDiv.appendChild(inputGroupAppendBtn)
-    inputGroup.appendChild(inputGroupAppendDiv)
+    inputGroupAppendDiv.appendChild(inputGroupAppendBtn);
+    inputGroup.appendChild(inputGroupAppendDiv);
 
-    const eventLinks = document.getElementById("links")
-    eventLinks.insertBefore(inputGroup, document.getElementById("eventLinkHelp"))
+    const eventLinks = document.getElementById("links");
+    eventLinks.insertBefore(inputGroup, document.getElementById("eventLinkHelp"));
 }
 
 function removeLinkInput(element) {
     const inputGroup = element.parentNode.parentNode;
     inputGroup.parentNode.removeChild(inputGroup);
 
-    extraLinkCount--
-    const numLinkField = document.getElementById("numRelatedLinks")
+    extraLinkCount--;
+    const numLinkField = document.getElementById("numRelatedLinks");
     numLinkField.value--;
 }
 
@@ -131,80 +134,80 @@ function participantsCheckValidity() {
 }
 
 function dateCheckValidity() {
-    var endTimeUnknown = document.getElementById("isEndTimeUnknown");
+    const endTimeUnknown = document.getElementById("isEndTimeUnknown");
     if (endTimeUnknown.checked !== true) {
         const startDate = document.getElementById("eventStartTime");
         const endDate = document.getElementById("eventEndTime");
 
         return new Date(endDate.value) - new Date(startDate.value) > 0;
     }
-    return true
+    return true;
 }
 
 
 (function () {
-    window.addEventListener('load', function () {
+    window.addEventListener("load", function () {
         // document.getElementById("activityForm").reset();
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.getElementsByClassName('needs-validation');
-        const validateGroup = document.getElementsByClassName('validate-me');
+        const forms = document.getElementsByClassName("needs-validation");
+        const validateGroup = document.getElementsByClassName("validate-me");
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
+        let validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener("submit", function (event) {
                 if (form.checkValidity() === false || participantsCheckValidity() === false || dateCheckValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    for (var i = 0; i < validateGroup.length; i++) {
-                        validateGroup[i].classList.add('was-validated');
+                    for (let i = 0; i < validateGroup.length; i++) {
+                        validateGroup[i].classList.add("was-validated");
                     }
 
-                    var startDate
-                    var endDate
+                    let startDate;
+                    let endDate;
 
                     if (dateCheckValidity() === false) {
                         startDate = document.getElementById("eventStartTime");
                         endDate = document.getElementById("eventEndTime");
 
-                        startDate.classList.remove("is-valid")
-                        startDate.classList.add("is-invalid")
-                        startDate.parentNode.classList.remove("was-validated")
+                        startDate.classList.remove("is-valid");
+                        startDate.classList.add("is-invalid");
+                        startDate.parentNode.classList.remove("was-validated");
 
-                        endDate.classList.remove("is-valid")
-                        endDate.classList.add("is-invalid")
-                        endDate.parentNode.classList.remove("was-validated")
+                        endDate.classList.remove("is-valid");
+                        endDate.classList.add("is-invalid");
+                        endDate.parentNode.classList.remove("was-validated");
                     } else {
                         startDate = document.getElementById("eventStartTime");
                         endDate = document.getElementById("eventEndTime");
 
-                        startDate.classList.remove("is-invalid")
-                        startDate.classList.add("is-valid")
+                        startDate.classList.remove("is-invalid");
+                        startDate.classList.add("is-valid");
 
-                        endDate.classList.remove("is-invalid")
-                        endDate.classList.add("is-valid")
+                        endDate.classList.remove("is-invalid");
+                        endDate.classList.add("is-valid");
                     }
 
                     const allCheckbox = document.getElementById("checkboxAll");
                     let idNames = ["amaki", "umino", "kawase", "kuraoka", "saijo", "shirosawa", "suzuhana", "takatsuji",
-                        "takeda", "hokaze", "miyase", "hanakawa"]
+                        "takeda", "hokaze", "miyase", "hanakawa"];
 
                     if (isAllChecked === false && numIndividualSelected === 0) {
                         allCheckbox.classList.add('is-invalid');
-                        var names
-                        var individualCheckbox
+                        let names;
+                        let individualCheckbox;
 
                         for (names of idNames) {
                             individualCheckbox = document.getElementById("checkbox" + names);
                             individualCheckbox.classList.add('is-invalid');
                         }
                     } else if ((isAllChecked === true && numIndividualSelected === 0) || (isAllChecked === false && numIndividualSelected > 0)) {
-                        allCheckbox.classList.remove('is-invalid')
+                        allCheckbox.classList.remove('is-invalid');
                         allCheckbox.classList.add('is-valid');
 
                         for (names of idNames) {
-                            individualCheckbox = document.getElementById("checkbox" + names);
-                            individualCheckbox.classList.remove('is-invalid')
+                            const individualCheckbox = document.getElementById("checkbox" + names);
+                            individualCheckbox.classList.remove('is-invalid');
                             individualCheckbox.classList.add('is-valid');
                         }
                     }

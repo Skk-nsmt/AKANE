@@ -1,23 +1,20 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-const jsonfile = require('jsonfile')
+const authMiddleware = require('./authMiddleware');
 
-router.get('/', function (req, res) {
-    const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
-
-    let ifErrorFromValidation = req.session.ifAddError
-    let ifErrorUnexpected = req.session.ifUnexpectedError
+router.get('/', authMiddleware.ifAuth, function (req, res) {
+    let ifErrorFromValidation = req.session.ifAddError;
+    let ifErrorUnexpected = req.session.ifUnexpectedError;
     req.session.ifAddError = null;
     req.session.ifUnexpectedError = null;
 
     res.render('editor', {
-        title: 'A.K.A.N.E.',
         mode: "add",
-        actors: actorJsonObj,
         ifError: ifErrorFromValidation,
-        ifErrorUnexpected: ifErrorUnexpected
-    })
+        ifErrorUnexpected: ifErrorUnexpected,
+        userInfo: (req.session.passport ? req.session.passport.user : null)
+    });
 });
 
 module.exports = router;

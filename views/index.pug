@@ -7,6 +7,15 @@ block content
         .alert.alert-success.alert-dismissible.mt-2.fade.show(role='alert' hidden=!addSuccess) Success!
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
+        .alert.alert-success.alert-dismissible.mt-2.fade.show(role='alert' hidden=!authSuccess) You are logged in.
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+                span(aria-hidden='true') &times;
+        .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!authFailed) Authentication failed.
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+                span(aria-hidden='true') &times;
+        .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!permission) You do not have permission to carry out that action.
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+                span(aria-hidden='true') &times;
         button.btn.btn-primary.mb-2(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseExample") Filter Options
         .collapse#collapseFilter
             .row
@@ -74,14 +83,14 @@ block content
                                 p.card-text= startDate.format(formattingString) + " JST"
                             else
                                 p.card-text= startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
-                            each link, index in activity["links"]
-                                a.card-link.btn.btn-outline-primary(href=link)= "Link " + (index + 1)
+                            each link, linkIndex in activity["links"]
+                                a.card-link.btn.btn-outline-primary(href=link target="_blank")= "Link " + (linkIndex + 1)
                             hr
                             .container
                                 .d-flex.justify-content-center(id="twitterEmbed" + index)
-                            a.btn.btn-info(href="/edit?id=" + activity["_id"]) Edit
-                            button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + activities.indexOf(activity)) Delete
-                            .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + activities.indexOf(activity))
+                            a.btn.btn-info(href="/edit?id=" + activity["_id"] hidden=!discordPrivilege) Edit
+                            button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + index hidden=!discordPrivilege) Delete
+                            .modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true' id="deleteModal" + index)
                                 .modal-dialog(role='document')
                                     .modal-content
                                         .modal-header

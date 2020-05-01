@@ -30,7 +30,7 @@ block content
                 .form-check.form-check-inline
                     // if any other are selected (i.e. there isn't all, ), then true, else false
                     -
-                        var isAllDisabled;
+                        let isAllDisabled;
                         if (itemToEdit) {
                             isAllDisabled = itemToEdit["participants"].includes("all") === false;
                         } else {
@@ -50,12 +50,12 @@ block content
                 small.form-text.text-muted(id='participantsHelp') Required
             .form-row
                 -
-                    var timeMode
-                    var isFullDay
-                    var isEndDisabled
+                    let timeMode
+                    let isFullDay
+                    let isEndDisabled
 
-                    var startTime
-                    var endTime
+                    let startTime
+                    let endTime
 
                     if (itemToEdit) {
                         if (itemToEdit["isFullDay"] === true) {
@@ -121,7 +121,7 @@ block content
                 small.form-text.text-muted(id='eventLinkHelp') This is an optional field
                 button.btn.btn-primary.mt-1(type="button" onclick="addLinkField()") Add Link
             -
-                var numRelated = 1;
+                let numRelated = 1;
                 if (itemToEdit) {
                     if (itemToEdit["links"].length === 0) {
                         numRelated = 1
@@ -133,7 +133,7 @@ block content
             .form-group.validate-me
                 label(for="eventTweetLink") Related Tweet
                 -
-                    var twitterVal;
+                    let twitterVal;
                     if (itemToEdit) {
                         if (itemToEdit["relatedTweetId"] === "") {
                             twitterVal = ""
