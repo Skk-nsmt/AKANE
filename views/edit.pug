@@ -1,25 +1,23 @@
 extends layout
 
 block content
-    // two modes: add mode and edit mode
-    // change to a separate page in the future?
     .container-md
-        h1.mt-2= (mode === 'add' ? "Add Activity" : "Edit Activity")
+        h1.mt-2 Edit Activity
         .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!ifError) There are errors in your submission, please correct them and try again.
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
         .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!ifErrorUnexpected) Unexpected error, please report this to the developer!
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
-        form.needs-validation#activityForm(method='post' action=(mode === 'add' ? "/api/addActivity" : "/api/editActivity?id=" + itemToEdit["_id"]) novalidate)
+        form.needs-validation#activityForm(method='post' action="/api/editActivity?id=" + itemToEdit["_id"] novalidate)
             .form-group.validate-me
                 label(for='eventNameEnglish') Event Name (English)
-                input.form-control(type='text' id='eventNameEnglish' name="eventNameEnglish" aria-describedby='eventNameHelpEnglish' placeholder="Enter event name here" value=(itemToEdit ? itemToEdit["activityName"] : undefined) required=true)
+                input.form-control(type='text' id='eventNameEnglish' name="eventNameEnglish" aria-describedby='eventNameHelpEnglish' placeholder="Enter event name here" value=itemToEdit["activityName"] required=true)
                 div.invalid-feedback This field is required
                 small.form-text.text-muted(id='eventNameHelpEnglish') This is a required field
             .form-group.validate-me
                 label(for='eventNameJapanese') Event Name (Japanese)
-                input.form-control(type='text' id='eventNameJapanese' name="eventNameJapanese" aria-describedby='eventNameHelpJapanese' placeholder="Enter Japanese event name here" value=(itemToEdit ? itemToEdit["activityNameJpn"] : undefined))
+                input.form-control(type='text' id='eventNameJapanese' name="eventNameJapanese" aria-describedby='eventNameHelpJapanese' placeholder="Enter Japanese event name here" value=(itemToEdit["activityNameJpn"]))
                 small.form-text.text-muted(id='eventNameHelpJapanese') This is an optional field
             .form-group.form-check
                 input.form-check-input#isShowroomStream(type="checkbox" name="isShowroomStream")
@@ -29,14 +27,8 @@ block content
                 br
                 .form-check.form-check-inline
                     // if any other are selected (i.e. there isn't all, ), then true, else false
-                    -
-                        let isAllDisabled;
-                        if (itemToEdit) {
-                            isAllDisabled = itemToEdit["participants"].includes("all") === false;
-                        } else {
-                            isAllDisabled = false
-                        }
-                    input.form-check-input(type="checkbox" id="checkboxAll" name="all" onclick="toggleAllSelect()" disabled=isAllDisabled checked=(itemToEdit ? itemToEdit["participants"].includes("all") : false))
+                    - let isAllDisabled = itemToEdit["participants"].includes("all") === false;
+                    input.form-check-input(type="checkbox" id="checkboxAll" name="all" onclick="toggleAllSelect()" disabled=isAllDisabled checked=itemToEdit["participants"].includes("all"))
                     label.form-check-label(for="checkboxAll") 22/7
                 each actor, key in actors
                     //- skip the first object (all) in the actors.json constant
@@ -45,44 +37,36 @@ block content
                         - continue
                     else
                         .form-check.form-check-inline
-                            input.form-check-input(type="checkbox" id="checkbox" + key name=key onclick="toggleIndividualSelect(this.id)" checked=(itemToEdit ? itemToEdit["participants"].includes(key) : false) disabled=(itemToEdit ? itemToEdit["participants"].includes("all") : false))
+                            input.form-check-input(type="checkbox" id="checkbox" + key name=key onclick="toggleIndividualSelect(this.id)" checked=(itemToEdit["participants"].includes(key)) disabled=(itemToEdit["participants"].includes("all")))
                             label.form-check-label(for="checkbox" + key)= actor["nameEngLast"] + " " + actor["nameEngFirst"]
                 small.form-text.text-muted(id='participantsHelp') Required
             .form-row
                 -
-                    let timeMode
-                    let isFullDay
-                    let isEndDisabled
+                    let timeMode;
+                    let isFullDay;
+                    let isEndDisabled;
 
-                    let startTime
-                    let endTime
+                    let startTime;
+                    let endTime;
 
-                    if (itemToEdit) {
-                        if (itemToEdit["isFullDay"] === true) {
-                            timeMode = "date"
-                            isFullDay = true
-                            startTime = moment(itemToEdit["startDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD")
-                            endTime = moment(itemToEdit["endDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD")
-                        } else {
-                            timeMode = "datetime-local"
-                            isFullDay = false
-
-                            startTime = moment(itemToEdit["startDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD[T]HH:mm")
-                            endTime = moment(itemToEdit["endDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD[T]HH:mm")
-                        }
-
-                        if (itemToEdit["isEndTimeUnknown"] === true) {
-                            isEndDisabled = true;
-                            endTime = undefined
-                        }
+                    if (itemToEdit["isFullDay"] === true) {
+                        timeMode = "date";
+                        isFullDay = true;
+                        startTime = moment(itemToEdit["startDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD");
+                        endTime = moment(itemToEdit["endDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD");
                     } else {
-                        timeMode = "datetime-local"
-                        isFullDay = false
-                        isEndDisabled = false
+                        timeMode = "datetime-local";
+                        isFullDay = false;
 
-                        startTime = undefined
-                        endTime = undefined
+                        startTime = moment(itemToEdit["startDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD[T]HH:mm");
+                        endTime = moment(itemToEdit["endDate"]).tz("Asia/Tokyo").format("YYYY-MM-DD[T]HH:mm");
                     }
+
+                    if (itemToEdit["isEndTimeUnknown"] === true) {
+                        isEndDisabled = true;
+                        endTime = undefined;
+                    }
+
                 .col
                     .form-group.validate-me
                         label(for='eventStartTime') Start time (JST)
@@ -103,48 +87,39 @@ block content
                         div.invalid-feedback This field is required / Invalid date
             .form-group.validate-me(id="links")
                 label(for="eventLink0") Related Links
-                if (itemToEdit)
-                    if (itemToEdit["links"].length === 0)
-                        input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" placeholder="https://...")
-                    else
-                        each link, index in itemToEdit["links"]
-                            if (index === 0)
-                                input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" value=link placeholder="https://...")
-                            else
-                                // need to make a field with Remove
-                                .input-group.mt-2
-                                    input.form-control(type="url" id="eventLink" + index name="eventLink" + index aria-describedby="eventLinkHelp" value=link placeholder="https://...")
-                                    .input-group-append
-                                        button.btn.btn-primary(onclick="removeLinkInput(this)") Remove
-                else
+                if (itemToEdit["links"].length === 0)
                     input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" placeholder="https://...")
+                else
+                    each link, index in itemToEdit["links"]
+                        if (index === 0)
+                            input.form-control(type="url" id="eventLink0" name="eventLink0" aria-describedby="eventLinkHelp" value=link placeholder="https://...")
+                        else
+                            // need to make a field with Remove
+                            .input-group.mt-2
+                                input.form-control(type="url" id="eventLink" + index name="eventLink" + index aria-describedby="eventLinkHelp" value=link placeholder="https://...")
+                                .input-group-append
+                                    button.btn.btn-primary(onclick="removeLinkInput(this)") Remove
                 small.form-text.text-muted(id='eventLinkHelp') This is an optional field
                 button.btn.btn-primary.mt-1(type="button" onclick="addLinkField()") Add Link
             -
                 let numRelated = 1;
-                if (itemToEdit) {
-                    if (itemToEdit["links"].length === 0) {
-                        numRelated = 1
-                    } else {
-                        numRelated = itemToEdit["links"].length
-                    }
+                if (itemToEdit["links"].length === 0) {
+                    numRelated = 1
+                } else {
+                    numRelated = itemToEdit["links"].length
                 }
             input(type="hidden" id="numRelatedLinks" name="numRelatedLinks" value=numRelated)
             .form-group.validate-me
                 label(for="eventTweetLink") Related Tweet
                 -
                     let twitterVal;
-                    if (itemToEdit) {
-                        if (itemToEdit["relatedTweetId"] === "") {
-                            twitterVal = ""
-                        } else {
-                            twitterVal = "https://twitter.com/user/status/" + itemToEdit["relatedTweetId"]
-                        }
-                    } else {
+                    if (itemToEdit["relatedTweetId"] === "") {
                         twitterVal = ""
+                    } else {
+                        twitterVal = "https://twitter.com/user/status/" + itemToEdit["relatedTweetId"]
                     }
                 input.form-control(type="url" id="eventTweetLink" name="eventTweetLink" aria-describedby="eventTweetLinkHelp" placeholder="https://twitter.com/..." value=twitterVal pattern="^https?:\\/\\/twitter\\.com\\/(?:#!\\/)?(\\w+)\\/status(es)?\\/(\\d+)\\S*\\/?$")
                 small.form-text.text-muted(id='eventTweetLinkHelp') This is an optional field
-            button.btn.btn-primary.mb-3(type="submit")= (mode === 'add' ? "Submit" : "Edit")
+            button.btn.btn-primary.mb-3(type="submit") Edit
 
     script(src="javascripts/add.js")

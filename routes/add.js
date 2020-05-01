@@ -9,8 +9,7 @@ router.get('/', authMiddleware.ifAuth, function (req, res) {
     req.session.ifAddError = null;
     req.session.ifUnexpectedError = null;
 
-    res.render('editor', {
-        mode: "add",
+    res.render('add', {
         ifError: ifErrorFromValidation,
         ifErrorUnexpected: ifErrorUnexpected,
         userInfo: (req.session.passport ? req.session.passport.user : null)

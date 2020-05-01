@@ -23,8 +23,7 @@ router.get('/', authMiddleware.ifAuth, function (req, res) {
                 if (err || result.length === 0) {
                     res.render("error");
                 } else {
-                    res.render('editor', {
-                        mode: "edit",
+                    res.render('edit', {
                         itemToEdit: result[0],
                         ifError: ifErrorFromValidation,
                         ifErrorUnexpected: ifErrorUnexpected,
