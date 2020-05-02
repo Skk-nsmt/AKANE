@@ -16,58 +16,72 @@ block content
         .alert.alert-danger.alert-dismissible.mt-2.fade.show(role='alert' hidden=!permission) You do not have permission to carry out that action.
             button.close(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') &times;
-        button.btn.btn-primary.mb-2(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseExample")
-            i.fas.fa-filter
-            |  Filter Options
-        .collapse#collapseFilter
-            .row
-                .col
-                    h5 Filter Activities by Seiyuus
-            .row
-                .col-1
-                .col-10.justify-content-center
-                    .btn-group.btn-group-sm.d-none.d-lg-flex(role="group" aria-label="Seiyuu Filters")
-                        each actor, key in actors
-                            button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"]
-                    .btn-group-vertical.d-block.d-lg-none(role="group" aria-label="Seiyuu Filters")
-                        each actor, key in actors
-                            button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"] + " " + actor["nameEngFirst"]
-                .col-1
-            .row
-                .col
-                    h5 Options
-            .row
-                .col-1
-                .col-10.justify-content-center
-                    .btn-group.btn-group-sm.btn-group-toggle.d-flex.justify-content-center(data-toggle='buttons')
-                        label.btn.btn-outline-secondary.active(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ALL filters you have selected")
-                            input#allOption(type='radio' name='options' autocomplete='off' checked='')
-                            |  All
-                        label.btn.btn-outline-secondary(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ANY filters you have selected")
-                            input#anyOption(type='radio', name='options', autocomplete='off')
-                            |  Any
-                .col-1
-            hr
+        p
+            button.btn.btn-primary(type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter")
+                i.fas.fa-filter
+                |  Filter Options
+            button.btn.btn-primary.ml-2(type="button" data-toggle="collapse" data-target="#collapseDisplay" aria-expanded="false" aria-controls="collapseDisplay")
+                i.fas.fa-tv
+                |  Display Options
+        .row
+            .col
+                .collapse#collapseFilter
+                    .row
+                        .col
+                            h5 Filter Activities by Seiyuus
+                    .row
+                        .col-1
+                        .col-10.justify-content-center
+                            .btn-group.btn-group-sm.d-none.d-lg-flex(role="group" aria-label="Seiyuu Filters")
+                                each actor, key in actors
+                                    button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"]
+                            .btn-group-vertical.d-block.d-lg-none(role="group" aria-label="Seiyuu Filters")
+                                each actor, key in actors
+                                    button.btn.btn-outline-secondary(value=key data-toggle="button" aria-pressed="false" type="button" onclick="filterSeiyuu(this)")= actor["nameEngLast"] + " " + actor["nameEngFirst"]
+                        .col-1
+                    .row
+                        .col
+                            h5 Options
+                    .row
+                        .col-1
+                        .col-10.justify-content-center
+                            .btn-group.btn-group-sm.btn-group-toggle.d-flex.justify-content-center(data-toggle='buttons')
+                                label.btn.btn-outline-secondary.active(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ALL filters you have selected")
+                                    input#allOption(type='radio' name='options' autocomplete='off' checked='')
+                                    |  All
+                                label.btn.btn-outline-secondary(onclick="filterActivitiesOnSeiyuu()" data-toggle="tooltip" data-placement="bottom" title="Displayed activities will conform to ANY filters you have selected")
+                                    input#anyOption(type='radio', name='options', autocomplete='off')
+                                    |  Any
+                        .col-1
+        .row
+            .col
+                .collapse#collapseDisplay
+                    .row
+                        .col
+                            .custom-control.custom-switch
+                                input.custom-control-input#ifUserTimeSwitch(type="checkbox" onclick="toggleTimeDisplay()")
+                                label.custom-control-label(for="ifUserTimeSwitch") Display time in my timezone.
+        hr
 
         // populate activities
         #activityArea
             each activity, index in activities
                 .card.mb-2
                     .seiyuu-filter-meta-tags(hidden=true class=activity["participants"])
+                    .start-time-meta-tags(hidden=true)= activity["startDate"]
+                    .end-time-meta-tags(hidden=true)= activity["endDate"]
+                    .is-full-day-meta-tags(hidden=true)= activity["isFullDay"]
+                    .is-end-time-unknown-meta-tags(hidden=true)= activity["isEndTimeUnknown"]
                     .card-header
                         a.card-link.text-primary(href="#activity" + index data-toggle="collapse")= activity["activityName"]
-                        - var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
-                        span.float-right.d-inline.text-muted= startDate.format("YYYY/MM/DD")
-                    if activities.indexOf(activity) === 0
-                        - var cardContentClassName = 'collapse show'
-                    else
-                        - var cardContentClassName = 'collapse'
-                    div(class=cardContentClassName, id="activity" + index)
+                        - var startDateJST = moment(activity["startDate"]).tz("Asia/Tokyo");
+                        span.float-right.d-inline.text-muted= startDateJST.format("YYYY/MM/DD")
+                    div(class=(activities.indexOf(activity) === 0 ? 'collapse show' : 'collapse'), id="activity" + index)
                         .card-body
                             h4.card-title= activity["activityName"]
                             h6.card-subtitle.mb-2.text-muted= activity["activityNameJpn"]
                             -
-                                var names = []
+                                let names = []
                                 for (const name of activity["participants"]) {
                                     names.push(actors[name]["nameEngLast"] + " " + actors[name]["nameEngFirst"])
                                 }
@@ -75,22 +89,14 @@ block content
                                 i.fas.fa-user-friends
                                 = " " + names.join(", ")
                             -
-                                var formattingString
-                                if (activity["isFullDay"]) {
-                                    formattingString = "YYYY/MM/DD"
-                                } else {
-                                    formattingString = "YYYY/MM/DD LT";
-                                }
-                                var startDate = moment(activity["startDate"]).tz("Asia/Tokyo");
-                                var endDate = moment(activity["endDate"]).tz("Asia/Tokyo");
-                            if activity["isEndTimeUnknown"]
-                                p.card-text
-                                    i.far.fa-clock
-                                    = " " + startDate.format(formattingString) + " JST"
-                            else
-                                p.card-text
-                                    i.far.fa-clock
-                                    = " " + startDate.format(formattingString) + " — " + endDate.format(formattingString) + " JST"
+                                let formattingString = (activity["isFullDay"] ? "YYYY/MM/DD" : "YYYY/MM/DD LT")
+                                let endDateJST = moment(activity["endDate"]).tz("Asia/Tokyo");
+                            p.card-text.activity-time
+                                i.far.fa-clock
+                                if activity["isEndTimeUnknown"]
+                                    = " " + startDateJST.format(formattingString) + " JST"
+                                else
+                                    = " " + startDateJST.format(formattingString) + " — " + endDateJST.format(formattingString) + " JST"
                             each link, linkIndex in activity["links"]
                                 a.card-link.btn.btn-outline-primary(href=link target="_blank")
                                     i.fas.fa-external-link-alt
@@ -119,8 +125,6 @@ block content
                                             a.btn.btn-danger(href="api/delete/?id=" + activity["_id"])
                                                 i.fas.fa-trash-alt
                                                 |  Delete
-
-        button(class="btn btn-primary" type="button" onclick="testREST()") Test API
         hr
     script(src="javascripts/index.js")
 

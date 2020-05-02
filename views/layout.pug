@@ -6,6 +6,8 @@ html
         link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
         script(src='/jquery/dist/jquery.min.js')
         script(src='/bootstrap/dist/js/bootstrap.bundle.js')
+        script(src='/moment/min/moment.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data.min.js', integrity='sha256-IWYg4uIC8/erItNXYvLtyYHioRi2zT1TFva8qaAU/ww=', crossorigin='anonymous')
         link(rel='stylesheet', href='@fortawesome/fontawesome-free/css/all.min.css')
     body
         nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
@@ -23,8 +25,10 @@ html
                         a.nav-link(href='/add')
                             i.fas.fa-plus
                             |  Add Activity
-                    li.nav-item#navDigest
-                        a.nav-link(href='/digest') Weekly Digest
+                    li.nav-item#navArchive
+                        a.nav-link(href='/archive')
+                            i.fas.fa-archive
+                            |  Archive
                 ul.navbar-nav
                     if (userInfo)
                         li.nav-item.active
@@ -52,8 +56,9 @@ html
             } else if (path === "/add") {
                 const navItem = document.getElementById("navAdd");
                 navItem.classList.add("active");
-            } else if (path === "/digest") {
-                const navItem = document.getElementById("navDigest");
+            } else if (path === "/archive") {
+                const navItem = document.getElementById("navArchive");
                 navItem.classList.add("active");
             }
-        block twitterScript
+
+block twitterScript

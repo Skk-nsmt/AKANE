@@ -13,9 +13,9 @@ const expressSanitizer = require('express-sanitizer');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api/apis');
 const addRouter = require('./routes/add');
-const digestRouter = require('./routes/digest');
 const editRouter = require('./routes/edit');
 const discordAuthRouter = require('./routes/discord-auth');
+const archiveRouter = require('./routes/archive')
 
 let app = express();
 
@@ -43,7 +43,7 @@ app.use('/', discordAuthRouter);
 app.use('/api', apiRouter);
 app.use('/add', addRouter);
 app.use('/edit', editRouter);
-app.use('/digest', digestRouter);
+app.use('/archive', archiveRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -27,6 +27,7 @@
     "is-promise": "^4.0.0",
     "jquery": "^3.4.1",
     "jsonfile": "^6.0.1",
+    "moment": "^2.25.1",
     "moment-timezone": "^0.5.28",
     "mongodb": "^3.5.7",
     "morgan": "^1.10.0",

@@ -26,10 +26,6 @@ let memberParticipationCheck = function (value) {
     return value === undefined || value === 'on';
 };
 
-router.get('/test', function (req) {
-    console.log(req.originalUrl);
-});
-
 router.get('/activityData', function (req, res) {
     mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
         if (err) {
