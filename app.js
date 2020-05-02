@@ -65,7 +65,7 @@ const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
 
 app.locals = {
     title: "A.K.A.N.E.",
-    version: "0.4.0-alpha",
+    version: "0.5.0-alpha",
     moment: require('moment-timezone'),
     actors: actorJsonObj
 }
