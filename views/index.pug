@@ -67,6 +67,7 @@ block content
         #activityArea
             each activity, index in activities
                 .card.mb-2
+                    .id-meta-tags(hidden=true)= activity["_id"]
                     .seiyuu-filter-meta-tags(hidden=true class=activity["participants"])
                     .start-time-meta-tags(hidden=true)= activity["startDate"]
                     .end-time-meta-tags(hidden=true)= activity["endDate"]
@@ -104,7 +105,15 @@ block content
                             hr
                             .container
                                 .d-flex.justify-content-center(id="twitterEmbed" + index)
-                            a.btn.btn-info(href="/edit?id=" + activity["_id"] hidden=!discordPrivilege)
+                            if (subscribed.includes(activity["_id"].toString()))
+                                button.btn.btn-secondary(onclick="toggleNotify(this)")
+                                    i.fas.fa-rss
+                                    |  Unsubscribe
+                            else
+                                button.btn.btn-primary(onclick="toggleNotify(this)")
+                                    i.fas.fa-rss
+                                    |  Subscribe
+                            a.btn.btn-info.ml-2(href="/edit?id=" + activity["_id"] hidden=!discordPrivilege)
                                 i.fas.fa-edit
                                 |  Edit
                             button.btn.btn-danger.ml-2(data-toggle="modal" data-target="#deleteModal" + index hidden=!discordPrivilege)
@@ -126,7 +135,7 @@ block content
                                                 i.fas.fa-trash-alt
                                                 |  Delete
         hr
+        button.btn.btn-primary(onclick="testPush()") Test
     script(src="javascripts/index.js")
-
 block twitterScript
     script(async='', src='https://platform.twitter.com/widgets.js', charset='utf-8')

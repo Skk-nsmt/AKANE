@@ -14,7 +14,7 @@ router.get('/', authMiddleware.ifAuth, function (req, res) {
     req.session.ifEditError = null;
     req.session.ifUnexpectedError = null;
 
-    mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+    mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
         if (err) {
             res.render("error");
         } else {

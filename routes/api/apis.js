@@ -27,7 +27,7 @@ let memberParticipationCheck = function (value) {
 };
 
 router.get('/activityData', function (req, res) {
-    mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+    mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
         if (err) {
             console.log(err);
         } else {
@@ -167,7 +167,7 @@ router.post('/addActivity', checkArray, authMiddleware.ifAuth, function (req, re
         // Need to sanitize data
         let newActivity = sanitizeData(req);
 
-        mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+        mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
             if (err) {
                 req.session.ifUnexpectedError = true;
                 res.redirect("/add");
@@ -274,7 +274,7 @@ router.post('/editActivity', checkArray, authMiddleware.ifAuth, function (req, r
         // Need to sanitize data
         const newActivity = sanitizeData(req);
 
-        mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+        mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
             if (err) {
                 req.session.ifUnexpectedError = true;
                 res.redirect("/edit?id" + req.query.id);
@@ -295,7 +295,7 @@ router.post('/editActivity', checkArray, authMiddleware.ifAuth, function (req, r
 });
 
 router.get('/delete', authMiddleware.ifAuth, function (req, res) {
-    mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+    mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
         if (err) {
             res.render("error");
         } else {

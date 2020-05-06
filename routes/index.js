@@ -6,8 +6,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const Discord = require('discord.js');
-const discordClient = new Discord.Client();
 
+const discordClient = new Discord.Client();
 discordClient.login(process.env.DISCORD_TOKEN);
 
 /* GET home page. */
@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
     let ifOpSuccess = req.session.opSuccess;
     req.session.opSuccess = null;
 
-    mongoClient.connect(process.env.MONGODB_URI, function (err, client) {
+    mongoClient.connect(process.env.MONGODB_URI, {useUnifiedTopology: true}, function (err, client) {
         if (err) {
             res.render("error");
         } else {
@@ -53,9 +53,11 @@ router.get('/', function (req, res) {
                         authFailed: req.query.authFailed,
                         permission: req.query.permission,
                         discordPrivilege: isDiscordPrivileged,
-                        userInfo: (req.session.passport ? req.session.passport.user : null)
+                        userInfo: (req.session.passport ? req.session.passport.user : null),
+                        subscribed: (req.session.subscribed ? req.session.subscribed : [])
                     }
                 );
+
                 client.close();
             });
         }

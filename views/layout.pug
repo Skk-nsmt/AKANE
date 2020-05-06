@@ -29,10 +29,10 @@ html
                         a.nav-link(href='/archive')
                             i.fas.fa-archive
                             |  Archive
-                ul.navbar-nav
+                ul.navbar-nav.ml-auto
                     if (userInfo)
                         li.nav-item.active
-                            a.nav-link= `Welcome! ${userInfo.username}#${userInfo.discriminator}`
+                            span.nav-link= `Welcome! ${userInfo.username}#${userInfo.discriminator}`
                         li.nav-item.active
                             a.btn.btn-outline-success.nav-link(href="/auth/logout")
                                 i.fas.fa-power-off
@@ -62,3 +62,4 @@ html
             }
 
 block twitterScript
+script(src="javascripts/client.js")

@@ -296,3 +296,5 @@ temp/
 # Markdown Navigator plugin
 
 # End of https://www.gitignore.io/api/git,node,macos,webstorm,jetbrains
+
+.idea/discord.xml

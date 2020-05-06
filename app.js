@@ -7,6 +7,7 @@ const session = require('express-session');
 const helmet = require('helmet');
 const passport = require('passport');
 const jsonfile = require('jsonfile')
+const webpush = require('web-push');
 
 const expressSanitizer = require('express-sanitizer');
 
@@ -16,6 +17,7 @@ const addRouter = require('./routes/add');
 const editRouter = require('./routes/edit');
 const discordAuthRouter = require('./routes/discord-auth');
 const archiveRouter = require('./routes/archive')
+const subscriptionRouter = require('./routes/subscription')
 
 let app = express();
 
@@ -44,6 +46,7 @@ app.use('/api', apiRouter);
 app.use('/add', addRouter);
 app.use('/edit', editRouter);
 app.use('/archive', archiveRouter);
+app.use('/subscription', subscriptionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -65,7 +68,7 @@ const actorJsonObj = jsonfile.readFileSync('public/resources/actors.json')
 
 app.locals = {
     title: "A.K.A.N.E.",
-    version: "0.5.0-alpha",
+    version: "0.6.0-beta-candidate-1",
     moment: require('moment-timezone'),
     actors: actorJsonObj
 }
